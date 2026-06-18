@@ -1,0 +1,46 @@
+:root {
+  --foundation-black: #1d1c1a;
+  --monorail-white: #fcfcf5;
+  --industrial-paper: #e9e8e4;
+  --system-grey: #444241;
+
+  --font-sans: "Px Grotesk", system-ui, sans-serif;
+  --font-mono: "Px Grotesk Mono", ui-monospace, monospace;
+  --font-serif: "Ivory LL", Georgia, serif;
+  --font-screen: "Px Grotesk Screen", var(--font-sans);
+
+  --deck-padding: 24px;
+  --rail-width: 112px;
+  --rail-gap: 22px;
+  --rail-dept-width: 32px;
+  --rail-nav-gap: 10.7px;
+  --rail-label-width: 8px;
+  --rail-meta-width: 8.2px;
+  --left-gap: 48px;
+  --left-content-max: 485px;
+  --left-wrap-max: 645px;
+  --story-aspect: 989 / 1032;
+  --story-width: 989;
+  --story-height: 1032;
+  --transition-theme: 0ms;
+}
+
+[data-theme="dark"] {
+  --bg: var(--foundation-black);
+  --text: var(--monorail-white);
+  --rail-line: rgba(252, 252, 245, 0.35);
+  --badge-bg: var(--system-grey);
+  --badge-text: var(--monorail-white);
+}
+
+[data-theme="light"] {
+  --bg: var(--monorail-white);
+  --text: var(--foundation-black);
+  --rail-line: rgba(29, 28, 26, 0.25);
+  --badge-bg: var(--industrial-paper);
+  --badge-text: var(--foundation-black);
+}
+
+[data-theme-transitioning="true"] * {
+  transition-duration: 0ms !important;
+}

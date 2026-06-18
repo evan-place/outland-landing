@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Outland</title>
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <div id="scroll-spacer" class="scroll-spacer" aria-hidden="true"></div>
+
+  <main class="deck" id="deck">
+    <div class="deck-left-wrap">
+      <aside class="deck-rail" aria-label="Section navigation">
+        <div class="rail-col rail-col--dept">
+          <span class="rail-rule rail-rule--full" aria-hidden="true"></span>
+          <p class="rail-dept">
+            Department of <em>imagination</em>
+          </p>
+        </div>
+
+        <div class="rail-col rail-col--nav">
+          <span class="rail-rule rail-rule--cap" aria-hidden="true"></span>
+          <span class="rail-label rail-label--section">Introduction</span>
+          <span class="rail-rule rail-rule--cap" aria-hidden="true"></span>
+          <div class="rail-meta-stack">
+            <span class="rail-label">01</span>
+            <span class="rail-label">EnterOutland 2026</span>
+          </div>
+          <span class="rail-rule rail-rule--full" aria-hidden="true"></span>
+        </div>
+      </aside>
+
+      <section class="deck-left">
+        <div class="deck-intro">
+          <button
+            type="button"
+            class="deck-logo theme-particle-source"
+            id="theme-toggle"
+            aria-label="Toggle light and dark mode"
+            title="Switch theme — press T"
+          ></button>
+          <p class="deck-headline theme-particle-source">
+            A future-focused experimental creative company operating at the intersection of imagination, design and emerging technology.
+          </p>
+        </div>
+
+        <div class="deck-story">
+          <div class="story-badge theme-particle-source">
+            <span class="story-badge__bracket" aria-hidden="true"></span>
+            <span class="story-badge__text">our story</span>
+            <span class="story-badge__bracket story-badge__bracket--right" aria-hidden="true"></span>
+          </div>
+          <p class="deck-body theme-particle-source">
+            Outland is a future-focused experimental creative company operating at the intersection of imagination, design and emerging technology. We collaborate with visionary founders and ambitious teams to build narrative-driven brand worlds through identity systems, digital experiences and storytelling. Using exploratory design, emerging technologies and AI, we expand ideas into immersive brand worlds grounded in strategy and narrative.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <section class="deck-right" aria-label="Story visuals">
+      <div class="story-frame">
+        <div class="story-stage">
+          <canvas id="story-canvas" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <p class="scroll-hint">Scroll to explore</p>
+    </section>
+  </main>
+
+  <canvas id="theme-canvas" class="theme-canvas" aria-hidden="true"></canvas>
+
+  <script src="js/crt-transition.js?v=16"></script>
+  <script src="js/theme-transition.js?v=8"></script>
+  <script src="js/slideshow.js?v=18"></script>
+  <script src="js/main.js?v=4"></script>
+</body>
+</html>

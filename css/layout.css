@@ -1,0 +1,410 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-y: auto;
+  scroll-behavior: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.scroll-spacer {
+  width: 100%;
+  pointer-events: none;
+}
+
+.deck {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(300px, var(--left-wrap-max)) 1fr;
+  grid-template-rows: 1fr;
+  gap: 0;
+  min-height: 100dvh;
+  padding: var(--deck-padding);
+  background: var(--bg);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ── Left column: rail + content (Figma Container 4761:2427) ── */
+
+.deck-left-wrap {
+  display: flex;
+  align-items: stretch;
+  gap: var(--left-gap);
+  min-width: 0;
+  height: calc(100dvh - var(--deck-padding) * 2);
+}
+
+/* ── Left rail (Figma Frame 4761:2424) ── */
+
+.deck-rail {
+  display: flex;
+  align-items: stretch;
+  gap: var(--rail-gap);
+  width: var(--rail-width);
+  min-height: calc(100dvh - var(--deck-padding) * 2);
+}
+
+.rail-col--dept {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: var(--rail-dept-width);
+  flex-shrink: 0;
+}
+
+.rail-col--nav {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: var(--rail-nav-gap);
+  min-width: 0;
+}
+
+.rail-rule {
+  flex-shrink: 0;
+  background: var(--rail-line);
+  width: 1px;
+}
+
+.rail-rule--full {
+  align-self: stretch;
+  min-height: 100%;
+}
+
+.rail-rule--cap {
+  align-self: flex-start;
+  height: 168px;
+}
+
+.rail-meta-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: var(--rail-meta-width);
+  height: 171px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.rail-label {
+  font-family: var(--font-screen);
+  font-size: 12px;
+  letter-spacing: 0.12px;
+  line-height: 1;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  color: var(--text);
+  transition: color 0.4s ease;
+}
+
+.rail-label--section {
+  width: var(--rail-label-width);
+  min-height: 72px;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.rail-dept {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2.2vw, 30px);
+  letter-spacing: -0.3px;
+  line-height: 1;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  color: var(--text);
+  transition: color 0.4s ease;
+  max-width: 21px;
+  padding-bottom: 0;
+}
+
+.rail-dept em {
+  font-style: italic;
+}
+
+/* ── Left content (Figma Main Content 4761:2426) ── */
+
+.deck-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+  max-width: var(--left-content-max);
+  padding: 0;
+}
+
+.deck-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.deck-logo {
+  display: block;
+  width: 204px;
+  height: 45px;
+  padding: 0;
+  border: none;
+  background-color: var(--text);
+  -webkit-mask: url("../assets/logo.svg") no-repeat center / contain;
+  mask: url("../assets/logo.svg") no-repeat center / contain;
+  transition: background-color 0.4s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+.deck-logo:hover {
+  transform: scale(1.02);
+}
+
+.deck-logo:active {
+  transform: scale(0.98);
+}
+
+.deck-logo:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+
+.deck-headline {
+  font-family: var(--font-sans);
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.2;
+  text-align: justify;
+  color: var(--text);
+  transition: color 0.4s ease;
+}
+
+.deck-story {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.story-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 2px 8px;
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  line-height: 22px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.story-badge__bracket {
+  display: block;
+  width: 3px;
+  height: 19px;
+  background: currentColor;
+  opacity: 0.7;
+  clip-path: polygon(0 0, 100% 8%, 100% 92%, 0 100%);
+}
+
+.story-badge__bracket--right {
+  transform: scaleY(-1) rotate(180deg);
+}
+
+.deck-body {
+  font-family: var(--font-sans);
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.2;
+  text-align: justify;
+  color: var(--text);
+  transition: color 0.4s ease;
+}
+
+/* ── Right panel ── */
+
+.deck-right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  background: #fff;
+  overflow: hidden;
+  min-height: calc(100dvh - var(--deck-padding) * 2);
+  min-width: 0;
+  margin-left: clamp(8px, 2vw, 48px);
+}
+
+.story-frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.story-stage {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: #1d1c1a;
+}
+
+#story-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(29, 28, 26, 0.45);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+body.has-scrolled .scroll-hint {
+  opacity: 0;
+}
+
+/* ── Theme transition overlay ── */
+
+.theme-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.theme-canvas.is-active {
+  pointer-events: auto;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 1024px) {
+  .deck {
+    grid-template-columns: minmax(260px, 1fr);
+    grid-template-rows: auto minmax(50vh, 1fr);
+  }
+
+  .deck-left-wrap {
+    gap: 24px;
+    height: auto;
+  }
+
+  .deck-left {
+    max-width: none;
+  }
+
+  .rail-col--dept .rail-dept {
+    display: none;
+  }
+
+  .rail-meta-stack .rail-label:last-child {
+    display: none;
+  }
+
+  .deck-right {
+    grid-column: 1 / -1;
+    margin-left: 0;
+    min-height: 55vh;
+  }
+
+  .story-frame {
+    justify-content: stretch;
+  }
+}
+
+@media (max-width: 640px) {
+  .deck {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    overflow-y: visible;
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .deck-left-wrap {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .deck-rail {
+    display: none;
+  }
+
+  .deck-left {
+    max-width: none;
+  }
+
+  .deck-right {
+    min-height: 60vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-logo {
+    transition: none;
+  }
+
+  .deck,
+  .deck-headline,
+  .deck-body,
+  .rail-label,
+  .rail-dept,
+  .deck-logo {
+    transition: none;
+  }
+}
