@@ -18,18 +18,20 @@
     return Math.max(0, Math.min(1, t));
   }
 
-  function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
-
   function hash2(x, y, seed) {
     var n = Math.sin(x * 127.1 + y * 311.7 + seed * 43.17) * 43758.5453;
     return n - Math.floor(n);
   }
 
-  function smoothstep(edge0, edge1, x) {
-    var t = clamp01((x - edge0) / (edge1 - edge0));
-    return t * t * (3 - 2 * t);
+  /** Slow e-ink / vintage UI refresh: creeps in, lingers, soft finish. */
+  function easeEink(t) {
+    t = clamp01(t);
+    var body = Math.pow(t, 1.65);
+    if (t > 0.9) {
+      var tail = (t - 0.9) / 0.1;
+      return lerp(body, 1, tail * tail * (3 - 2 * tail));
+    }
+    return body;
   }
 
   /**
@@ -56,11 +58,9 @@
   };
 
   ThemeTransition.prototype._buildSquareGrid = function (w, h) {
-    var cellSize = Math.max(4, Math.round(Math.min(w, h) / 155));
+    var cellSize = Math.max(3, Math.round(Math.min(w, h) / 300));
     var cols = Math.ceil(w / cellSize);
     var rows = Math.ceil(h / cellSize);
-    var deckRight = document.querySelector(".deck-right");
-    var panelRect = deckRight ? deckRight.getBoundingClientRect() : null;
     var cells = [];
 
     for (var row = 0; row < rows; row++) {
@@ -69,17 +69,6 @@
         var y = row * cellSize;
         var size = Math.min(cellSize, w - x, h - y);
         if (size < 2) continue;
-
-        var cx = x + size * 0.5;
-        var cy = y + size * 0.5;
-        var inPanel =
-          panelRect &&
-          cx >= panelRect.left &&
-          cx <= panelRect.right &&
-          cy >= panelRect.top &&
-          cy <= panelRect.bottom;
-
-        if (inPanel) continue;
 
         cells.push({
           x: x,
@@ -93,18 +82,12 @@
     this._squareGrid = cells;
   };
 
-  ThemeTransition.prototype._drawSquareMask = function (ctx, t, maskBg, w, h) {
-    if (!this._squareGrid) {
-      this._buildSquareGrid(w, h);
-    }
+  ThemeTransition.prototype._maskProgress = function (t) {
+    return easeEink(clamp01(t));
+  };
 
-    var progress = easeInOutCubic(clamp01((t - 0.03) / 0.92));
-    progress = Math.pow(progress, 0.7);
-    var settle = t > 0.92 ? smoothstep(0.92, 1, t) : 0;
-    if (settle > 0) {
-      progress = lerp(progress, 1, settle);
-    }
-
+  ThemeTransition.prototype._drawSquareMask = function (ctx, t, maskBg) {
+    var progress = this._maskProgress(t);
     ctx.fillStyle = rgbStr(maskBg);
 
     for (var i = 0; i < this._squareGrid.length; i++) {
@@ -126,30 +109,33 @@
       return Promise.resolve();
     }
 
-    this.active = true;
-    this.canvas.classList.add("is-active");
-    this.canvas.style.opacity = "1";
-
     var maskBg = THEME_COLORS[fromTheme].bg;
-    var duration = 1100;
+    var duration = 1000;
     var w = window.innerWidth;
     var h = window.innerHeight;
     var htmlEl = document.documentElement;
+    var ctx = self.ctx;
 
+    this.active = true;
+    this.canvas.classList.add("is-active");
+    this.canvas.style.opacity = "1";
     this._squareGrid = null;
+    this._buildSquareGrid(w, h);
+
+    htmlEl.setAttribute("data-theme-transitioning", "true");
+    onSwap();
+
+    ctx.clearRect(0, 0, w, h);
+    this._drawSquareMask(ctx, 0, maskBg);
 
     return new Promise(function (resolve) {
       var start = performance.now();
 
-      htmlEl.setAttribute("data-theme-transitioning", "true");
-      onSwap();
-
       function frame(now) {
         var t = Math.min(1, (now - start) / duration);
-        var ctx = self.ctx;
 
         ctx.clearRect(0, 0, w, h);
-        self._drawSquareMask(ctx, t, maskBg, w, h);
+        self._drawSquareMask(ctx, t, maskBg);
 
         if (t < 1) {
           requestAnimationFrame(frame);
@@ -159,6 +145,7 @@
           self.canvas.classList.remove("is-active");
           htmlEl.removeAttribute("data-theme-transitioning");
           self.active = false;
+          self._squareGrid = null;
           resolve();
         }
       }

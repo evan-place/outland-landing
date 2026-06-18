@@ -17,8 +17,9 @@
   --rail-label-width: 8px;
   --rail-meta-width: 8.2px;
   --left-gap: 48px;
-  --left-content-max: 485px;
-  --left-wrap-max: 645px;
+  --left-content-max: 480px;
+  --left-wrap-max: 640px;
+  --deck-column-gap: 100px;
   --story-aspect: 989 / 1032;
   --story-width: 989;
   --story-height: 1032;

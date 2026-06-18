@@ -42,7 +42,8 @@ body {
   display: grid;
   grid-template-columns: minmax(300px, var(--left-wrap-max)) 1fr;
   grid-template-rows: 1fr;
-  gap: 0;
+  column-gap: var(--deck-column-gap);
+  row-gap: 0;
   min-height: 100dvh;
   padding: var(--deck-padding);
   background: var(--bg);
@@ -56,6 +57,7 @@ body {
   align-items: stretch;
   gap: var(--left-gap);
   min-width: 0;
+  max-width: var(--left-wrap-max);
   height: calc(100dvh - var(--deck-padding) * 2);
 }
 
@@ -177,16 +179,8 @@ body {
   background-color: var(--text);
   -webkit-mask: url("../assets/logo.svg") no-repeat center / contain;
   mask: url("../assets/logo.svg") no-repeat center / contain;
-  transition: background-color 0.4s ease, transform 0.15s ease;
+  transition: background-color 0.4s ease;
   cursor: pointer;
-}
-
-.deck-logo:hover {
-  transform: scale(1.02);
-}
-
-.deck-logo:active {
-  transform: scale(0.98);
 }
 
 .deck-logo:focus-visible {
@@ -259,7 +253,7 @@ body {
   overflow: hidden;
   min-height: calc(100dvh - var(--deck-padding) * 2);
   min-width: 0;
-  margin-left: clamp(8px, 2vw, 48px);
+  margin-left: 0;
 }
 
 .story-frame {
@@ -332,6 +326,7 @@ body.has-scrolled .scroll-hint {
   .deck {
     grid-template-columns: minmax(260px, 1fr);
     grid-template-rows: auto minmax(50vh, 1fr);
+    column-gap: 0;
   }
 
   .deck-left-wrap {
